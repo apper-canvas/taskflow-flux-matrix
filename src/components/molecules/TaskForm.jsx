@@ -1,22 +1,38 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Input from "@/components/atoms/Input";
+import { format } from "date-fns";
+import { projectService } from "@/services/api/projectService";
+import ApperIcon from "@/components/ApperIcon";
 import Textarea from "@/components/atoms/Textarea";
 import Select from "@/components/atoms/Select";
 import Button from "@/components/atoms/Button";
-import ApperIcon from "@/components/ApperIcon";
-import { format } from "date-fns";
+import Input from "@/components/atoms/Input";
 
 const TaskForm = ({ onSubmit, categories = [], onClose, initialData = null }) => {
+  const [projects, setProjects] = useState([]);
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     description: initialData?.description || "",
     priority: initialData?.priority || "medium",
     dueDate: initialData?.dueDate || "",
-    category: initialData?.category || (categories[0]?.name || "Personal")
+    category: initialData?.category || (categories[0]?.name || "Personal"),
+    projectId: initialData?.projectId || ""
   });
 
-  const [errors, setErrors] = useState({});
+const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const projectsData = await projectService.getAll();
+        setProjects(projectsData);
+      } catch (err) {
+        console.error("Failed to load projects:", err);
+      }
+    };
+    
+    loadProjects();
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -47,18 +63,17 @@ const TaskForm = ({ onSubmit, categories = [], onClose, initialData = null }) =>
 
     onSubmit(taskData);
     
-    if (!initialData) {
+if (!initialData) {
       // Reset form for new tasks
       setFormData({
         title: "",
         description: "",
         priority: "medium",
         dueDate: "",
-        category: categories[0]?.name || "Personal"
+        category: categories[0]?.name || "Personal",
+        projectId: ""
       });
     }
-    
-    setErrors({});
   };
 
   const handleChange = (field, value) => {
@@ -124,8 +139,7 @@ const TaskForm = ({ onSubmit, categories = [], onClose, initialData = null }) =>
             <option value="medium">Medium Priority</option>
             <option value="high">High Priority</option>
           </Select>
-
-          <Input
+<Input
             type="date"
             label="Due Date (Optional)"
             value={formData.dueDate}
@@ -144,18 +158,24 @@ const TaskForm = ({ onSubmit, categories = [], onClose, initialData = null }) =>
               </option>
             ))}
           </Select>
+
+          <Select
+            label="Project (Optional)"
+            value={formData.projectId}
+            onChange={(e) => handleChange("projectId", e.target.value)}
+          >
+            <option value="">No Project</option>
+            {projects
+              .filter(project => project.status === 'active' || project.status === 'planning')
+              .map((project) => (
+                <option key={project.Id} value={project.Id}>
+                  {project.name}
+                </option>
+              ))}
+          </Select>
         </div>
 
-        <div className="flex space-x-3 pt-4">
-          <Button
-            type="submit"
-            className="flex-1"
-            disabled={!formData.title.trim()}
-          >
-            <ApperIcon name="Plus" size={16} className="mr-2" />
-            {initialData ? "Update Task" : "Create Task"}
-          </Button>
-          
+        <div className="flex justify-end gap-3 pt-4">
           {onClose && (
             <Button
               type="button"
@@ -165,6 +185,14 @@ const TaskForm = ({ onSubmit, categories = [], onClose, initialData = null }) =>
               Cancel
             </Button>
           )}
+          
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={!formData.title.trim()}
+          >
+            {initialData ? "Update Task" : "Create Task"}
+          </Button>
         </div>
       </form>
     </motion.div>

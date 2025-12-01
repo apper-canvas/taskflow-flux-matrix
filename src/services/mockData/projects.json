@@ -1,0 +1,80 @@
+[
+  {
+    "Id": 1,
+    "name": "Website Redesign",
+    "description": "Complete overhaul of company website with modern design and improved user experience",
+    "status": "active",
+    "priority": "high",
+    "startDate": "2024-01-15",
+    "dueDate": "2024-03-30",
+    "color": "#4F46E5",
+    "progress": 65,
+    "createdAt": "2024-01-15T09:00:00.000Z",
+    "updatedAt": "2024-01-28T14:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "name": "Mobile App Development",
+    "description": "Native iOS and Android application for customer engagement and service delivery",
+    "status": "active",
+    "priority": "high",
+    "startDate": "2024-02-01",
+    "dueDate": "2024-06-15",
+    "color": "#7C3AED",
+    "progress": 30,
+    "createdAt": "2024-02-01T10:00:00.000Z",
+    "updatedAt": "2024-02-10T16:45:00.000Z"
+  },
+  {
+    "Id": 3,
+    "name": "Marketing Campaign Q1",
+    "description": "Comprehensive digital marketing strategy for Q1 including social media, email campaigns, and content creation",
+    "status": "active",
+    "priority": "medium",
+    "startDate": "2024-01-01",
+    "dueDate": "2024-03-31",
+    "color": "#F59E0B",
+    "progress": 80,
+    "createdAt": "2024-01-01T08:00:00.000Z",
+    "updatedAt": "2024-01-25T11:20:00.000Z"
+  },
+  {
+    "Id": 4,
+    "name": "Database Migration",
+    "description": "Migrate legacy database to modern cloud infrastructure with improved security and performance",
+    "status": "planning",
+    "priority": "high",
+    "startDate": "2024-03-01",
+    "dueDate": "2024-04-30",
+    "color": "#EF4444",
+    "progress": 5,
+    "createdAt": "2024-02-15T13:00:00.000Z",
+    "updatedAt": "2024-02-15T13:00:00.000Z"
+  },
+  {
+    "Id": 5,
+    "name": "Team Training Program",
+    "description": "Comprehensive training program for new technologies and professional development",
+    "status": "completed",
+    "priority": "medium",
+    "startDate": "2023-11-01",
+    "dueDate": "2023-12-31",
+    "color": "#10B981",
+    "progress": 100,
+    "createdAt": "2023-11-01T09:00:00.000Z",
+    "updatedAt": "2023-12-31T17:00:00.000Z"
+  },
+  {
+    "Id": 6,
+    "name": "Customer Portal",
+    "description": "Self-service customer portal for account management, billing, and support requests",
+    "status": "active",
+    "priority": "medium",
+    "startDate": "2024-02-15",
+    "dueDate": "2024-05-15",
+    "color": "#8B5CF6",
+    "progress": 25,
+    "createdAt": "2024-02-15T10:30:00.000Z",
+    "updatedAt": "2024-02-20T14:15:00.000Z"
+  }
+]

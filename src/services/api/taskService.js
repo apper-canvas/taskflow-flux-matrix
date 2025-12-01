@@ -19,13 +19,14 @@ export const taskService = {
   async create(taskData) {
     await delay(250);
     const maxId = tasks.length > 0 ? Math.max(...tasks.map(t => t.Id)) : 0;
-    const newTask = {
+const newTask = {
       Id: maxId + 1,
       title: taskData.title,
       description: taskData.description || "",
       priority: taskData.priority || "medium",
       dueDate: taskData.dueDate || null,
       category: taskData.category || "Personal",
+      projectId: taskData.projectId || null,
       completed: false,
       createdAt: new Date().toISOString(),
       completedAt: null
@@ -40,7 +41,7 @@ export const taskService = {
     const index = tasks.findIndex(t => t.Id === parseInt(id));
     if (index === -1) return null;
 
-    tasks[index] = {
+tasks[index] = {
       ...tasks[index],
       ...updates,
       Id: parseInt(id)
