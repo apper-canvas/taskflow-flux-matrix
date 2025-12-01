@@ -18,7 +18,8 @@ const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
-  const [editingProject, setEditingProject] = useState(null);
+const [editingProject, setEditingProject] = useState(null);
+  const navigate = useNavigate();
 
   const loadProjects = async () => {
     try {
@@ -303,7 +304,6 @@ const Projects = () => {
     </motion.div>
   );
 
-  const navigate = useNavigate();
 };
 
 export default Projects;
