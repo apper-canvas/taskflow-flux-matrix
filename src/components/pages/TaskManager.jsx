@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import TaskForm from "@/components/molecules/TaskForm";
-import FilterBar from "@/components/molecules/FilterBar";
-import TaskList from "@/components/organisms/TaskList";
+import { taskService } from "@/services/api/taskService";
+import { categoryService } from "@/services/api/categoryService";
+import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import Button from "@/components/atoms/Button";
-import ApperIcon from "@/components/ApperIcon";
-import { taskService } from "@/services/api/taskService";
-import { categoryService } from "@/services/api/categoryService";
+import TaskList from "@/components/organisms/TaskList";
+import TaskForm from "@/components/molecules/TaskForm";
+import FilterBar from "@/components/molecules/FilterBar";
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState([]);
+const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ const TaskManager = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-
+  const [creatingSubtaskFor, setCreatingSubtaskFor] = useState(null);
   const loadData = async () => {
     try {
       setLoading(true);
@@ -43,19 +43,32 @@ const TaskManager = () => {
     loadData();
   }, []);
 
-  const handleCreateTask = async (taskData) => {
+const handleCreateTask = async (taskData) => {
     try {
+      // If creating subtask, add parentId
+      if (creatingSubtaskFor) {
+        taskData.parentId = creatingSubtaskFor.Id;
+      }
+      
       const newTask = await taskService.create(taskData);
       setTasks(prev => [newTask, ...prev]);
       setShowForm(false);
-      toast.success("Task created successfully!");
+      setCreatingSubtaskFor(null);
+      
+      const message = creatingSubtaskFor ? "Subtask created successfully!" : "Task created successfully!";
+      toast.success(message);
     } catch (err) {
       console.error("Failed to create task:", err);
       toast.error("Failed to create task");
     }
   };
 
-  const handleUpdateTask = async (taskData) => {
+  const handleCreateSubtask = (parentTask) => {
+    setCreatingSubtaskFor(parentTask);
+    setShowForm(true);
+  };
+
+const handleUpdateTask = async (taskData) => {
     if (!editingTask) return;
 
     try {
@@ -64,6 +77,7 @@ const TaskManager = () => {
         task.Id === editingTask.Id ? updatedTask : task
       ));
       setEditingTask(null);
+      setCreatingSubtaskFor(null);
       toast.success("Task updated successfully!");
     } catch (err) {
       console.error("Failed to update task:", err);
@@ -71,7 +85,7 @@ const TaskManager = () => {
     }
   };
 
-  const handleToggleComplete = async (taskId) => {
+const handleToggleComplete = async (taskId) => {
     const task = tasks.find(t => t.Id === taskId);
     if (!task) return;
 
@@ -79,9 +93,10 @@ const TaskManager = () => {
       const updatedTask = await taskService.update(taskId, {
         completed: !task.completed
       });
-      setTasks(prev => prev.map(t => 
-        t.Id === taskId ? updatedTask : t
-      ));
+      
+      // Reload all tasks to get updated parent/child relationships
+      const allTasks = await taskService.getAll();
+      setTasks(allTasks);
       
       toast.success(
         updatedTask.completed ? "Task completed! 🎉" : "Task reopened"
@@ -92,21 +107,30 @@ const TaskManager = () => {
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
+const handleDeleteTask = async (taskId) => {
+    const task = tasks.find(t => t.Id === taskId);
+    const hasSubtasks = tasks.some(t => t.parentId === taskId);
+    
+    const confirmMessage = hasSubtasks 
+      ? "Are you sure you want to delete this task and all its subtasks?" 
+      : "Are you sure you want to delete this task?";
+      
+    if (!confirm(confirmMessage)) return;
 
     try {
       await taskService.delete(taskId);
-      setTasks(prev => prev.filter(task => task.Id !== taskId));
+      // Reload all tasks to ensure proper cleanup
+      const allTasks = await taskService.getAll();
+      setTasks(allTasks);
       toast.success("Task deleted successfully");
     } catch (err) {
       console.error("Failed to delete task:", err);
-      toast.error("Failed to delete task");
+toast.error("Failed to delete task");
     }
   };
-
-  const getFilteredTasks = () => {
-    let filtered = tasks;
+const getFilteredTasks = () => {
+    // Start with main tasks only (no parent)
+    let filtered = tasks.filter(task => !task.parentId);
 
     // Apply status filter
     if (activeFilter === "active") {
@@ -127,11 +151,13 @@ const TaskManager = () => {
     return filtered;
   };
 
-  const getTaskCounts = () => {
+const getTaskCounts = () => {
+    // Count only main tasks for stats
+    const mainTasks = tasks.filter(task => !task.parentId);
     return {
-      all: tasks.length,
-      active: tasks.filter(task => !task.completed).length,
-      completed: tasks.filter(task => task.completed).length
+      all: mainTasks.length,
+      active: mainTasks.filter(task => !task.completed).length,
+      completed: mainTasks.filter(task => task.completed).length
     };
   };
 
@@ -191,12 +217,14 @@ const TaskManager = () => {
       />
 
       {/* Task List */}
-      <TaskList
+<TaskList
         tasks={filteredTasks}
+        allTasks={tasks}
         onToggleComplete={handleToggleComplete}
         onEditTask={setEditingTask}
         onDeleteTask={handleDeleteTask}
         onCreateTask={() => setShowForm(true)}
+        onCreateSubtask={handleCreateSubtask}
       />
 
       {/* Stats Summary */}

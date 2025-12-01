@@ -6,6 +6,7 @@
     "priority": "high",
     "dueDate": "2024-01-20",
     "category": "Work",
+    "parentId": null,
     "completed": false,
     "createdAt": "2024-01-15T10:00:00Z",
     "completedAt": null
@@ -17,6 +18,7 @@
     "priority": "medium",
     "dueDate": "2024-01-18",
     "category": "Personal",
+    "parentId": null,
     "completed": false,
     "createdAt": "2024-01-15T14:30:00Z",
     "completedAt": null
@@ -28,6 +30,7 @@
     "priority": "low",
     "dueDate": "2024-01-25",
     "category": "Learning",
+    "parentId": null,
     "completed": true,
     "createdAt": "2024-01-10T09:15:00Z",
     "completedAt": "2024-01-16T16:45:00Z"
@@ -39,6 +42,7 @@
     "priority": "medium",
     "dueDate": "2024-01-22",
     "category": "Health",
+    "parentId": null,
     "completed": false,
     "createdAt": "2024-01-14T11:20:00Z",
     "completedAt": null
@@ -50,8 +54,69 @@
     "priority": "high",
     "dueDate": "2024-01-19",
     "category": "Career",
+    "parentId": null,
     "completed": false,
     "createdAt": "2024-01-12T15:45:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 6,
+    "title": "Read proposal document",
+    "description": "Read through the entire proposal document carefully",
+    "priority": "high",
+    "dueDate": "2024-01-18",
+    "category": "Work",
+    "parentId": 1,
+    "completed": true,
+    "createdAt": "2024-01-15T10:30:00Z",
+    "completedAt": "2024-01-16T14:20:00Z"
+  },
+  {
+    "Id": 7,
+    "title": "Take notes on key points",
+    "description": "Highlight and note important sections and potential issues",
+    "priority": "high",
+    "dueDate": "2024-01-19",
+    "category": "Work",
+    "parentId": 1,
+    "completed": false,
+    "createdAt": "2024-01-15T10:35:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 8,
+    "title": "Schedule team discussion",
+    "description": "Set up meeting with team to discuss proposal",
+    "priority": "medium",
+    "dueDate": "2024-01-20",
+    "category": "Work",
+    "parentId": 1,
+    "completed": false,
+    "createdAt": "2024-01-15T10:40:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 9,
+    "title": "Buy vegetables",
+    "description": "Get fresh vegetables for the main course",
+    "priority": "medium",
+    "dueDate": "2024-01-18",
+    "category": "Personal",
+    "parentId": 2,
+    "completed": true,
+    "createdAt": "2024-01-15T14:35:00Z",
+    "completedAt": "2024-01-16T11:30:00Z"
+  },
+  {
+    "Id": 10,
+    "title": "Buy dessert ingredients",
+    "description": "Get ingredients for homemade dessert",
+    "priority": "low",
+    "dueDate": "2024-01-18",
+    "category": "Personal",
+    "parentId": 2,
+    "completed": false,
+    "createdAt": "2024-01-15T14:37:00Z",
     "completedAt": null
   }
 ]

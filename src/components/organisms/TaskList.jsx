@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import TaskCard from "@/components/molecules/TaskCard";
 import Empty from "@/components/ui/Empty";
 
-const TaskList = ({ tasks, onToggleComplete, onEditTask, onDeleteTask, onCreateTask }) => {
+const TaskList = ({ tasks, onToggleComplete, onEditTask, onDeleteTask, onCreateTask, onCreateSubtask }) => {
   if (!tasks.length) {
     return (
       <Empty

@@ -159,7 +159,7 @@ if (!initialData) {
             ))}
           </Select>
 
-          <Select
+<Select
             label="Project (Optional)"
             value={formData.projectId}
             onChange={(e) => handleChange("projectId", e.target.value)}
@@ -174,6 +174,21 @@ if (!initialData) {
               ))}
           </Select>
         </div>
+
+        {/* Parent Task Selection for Subtasks */}
+        {initialData?.parentId && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="flex items-center space-x-2">
+              <ApperIcon name="ArrowRight" size={14} className="text-blue-600" />
+              <span className="text-sm font-medium text-blue-800">
+                Subtask
+              </span>
+            </div>
+            <p className="text-xs text-blue-600 mt-1">
+              This is a subtask. It will be grouped under its parent task.
+            </p>
+          </div>
+        )}
 
         <div className="flex justify-end gap-3 pt-4">
           {onClose && (
