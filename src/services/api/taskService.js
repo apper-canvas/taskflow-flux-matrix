@@ -166,13 +166,13 @@ const index = tasks.findIndex(t => t.Id === parseInt(id));
   },
 
   // Get subtasks for a parent task
-  getSubtasks(parentId) {
+getSubtasks(parentId) {
     return tasks
       .filter(task => task.parentId === parseInt(parentId))
       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   },
 
-// Get all main tasks (tasks without parent)
+  // Get all main tasks (tasks without parent)
   getMainTasks() {
     return tasks
       .filter(task => !task.parentId)
@@ -184,6 +184,13 @@ const index = tasks.findIndex(t => t.Id === parseInt(id));
     return tasks
       .filter(task => task.projectId === parseInt(projectId))
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  // Get tasks with due dates for calendar view
+  getTasksWithDueDates() {
+    return tasks
+      .filter(task => task.dueDate)
+      .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
   },
 
   // Update task status (for Kanban board)

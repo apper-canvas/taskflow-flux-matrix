@@ -11,6 +11,7 @@ import { projectService } from "@/services/api/projectService";
 import { taskService } from "@/services/api/taskService";
 import KanbanBoard from "@/components/organisms/KanbanBoard";
 import TaskList from "@/components/organisms/TaskList";
+import CalendarView from "@/components/organisms/CalendarView";
 import TaskForm from "@/components/molecules/TaskForm";
 
 const ProjectDetail = () => {
@@ -202,18 +203,12 @@ const ProjectDetail = () => {
               <Button
                 key={view.key}
                 variant={activeView === view.key ? "primary" : "ghost"}
-                size="sm"
+size="sm"
                 onClick={() => setActiveView(view.key)}
                 className="flex items-center space-x-2"
-                disabled={view.key === 'calendar'}
               >
                 <ApperIcon name={view.icon} size={14} />
                 <span>{view.label}</span>
-                {view.key === 'calendar' && (
-                  <Badge variant="secondary" className="ml-2 text-xs">
-                    Soon
-                  </Badge>
-                )}
               </Button>
             ))}
           </div>
@@ -253,12 +248,12 @@ const ProjectDetail = () => {
           </div>
         )}
 
-        {activeView === 'calendar' && (
-          <div className="p-6 text-center py-20">
-            <ApperIcon name="Calendar" size={64} className="mx-auto mb-4 text-gray-300" />
-            <h3 className="text-xl font-medium text-gray-900 mb-2">Calendar View</h3>
-            <p className="text-gray-600">Calendar view is coming soon!</p>
-          </div>
+{activeView === 'calendar' && (
+          <CalendarView
+            tasks={tasks}
+            onTaskEdit={handleEditTask}
+            onTaskUpdate={handleTaskUpdate}
+          />
         )}
       </div>
 
