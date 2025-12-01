@@ -41,160 +41,161 @@ const TaskCard = ({ task, onToggleComplete, onEdit, onDelete, subtasks = [], onC
   const dueDateText = formatDueDate(task.dueDate);
   
 return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
+    <div>
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, x: -20 }}
         whileHover={{ y: -2 }}
         className={`bg-white rounded-lg p-4 task-card-shadow hover:task-card-shadow-hover transition-all duration-200 ${
           task.completed ? "opacity-75" : ""
         }`}
-    >
-      <div className="flex items-start space-x-4">
-        <div className="pt-1">
-          <Checkbox
-            checked={task.completed}
-            onChange={() => onToggleComplete(task.Id)}
-          />
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h3 className={`font-semibold text-gray-900 ${
-                task.completed ? "line-through text-gray-500" : ""
-              }`}>
-                {task.title}
-              </h3>
-              
-              {task.description && (
-                <p className={`text-sm text-gray-600 mt-1 ${
-                  task.completed ? "line-through" : ""
-                }`}>
-                  {task.description}
-                </p>
-              )}
-            </div>
-
-            <div className="flex items-center space-x-2 ml-4">
-              <Badge variant={priorityBadge.variant} size="sm">
-                <ApperIcon 
-                  name={priorityBadge.icon} 
-                  size={12} 
-                  className="mr-1" 
-                />
-                {task.priority}
-              </Badge>
-
-              <div className="flex space-x-1">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onEdit(task)}
-                  className="p-1.5"
-                >
-                  <ApperIcon name="Edit2" size={14} />
-                </Button>
-                
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onDelete(task.Id)}
-                  className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50"
-                >
-                  <ApperIcon name="Trash2" size={14} />
-                </Button>
-              </div>
-</div>
+      >
+        <div className="flex items-start space-x-4">
+          <div className="pt-1">
+            <Checkbox
+              checked={task.completed}
+              onChange={() => onToggleComplete(task.Id)}
+            />
           </div>
 
-          <div className="flex items-center justify-between mt-3">
-            <div className="flex items-center space-x-2">
-              <span 
-                className="category-tag text-xs"
-                style={{ 
-                  backgroundColor: `rgba(124, 58, 237, 0.1)`,
-                  color: "#7C3AED"
-                }}
-              >
-                {task.category}
-              </span>
-              
-              {subtasks.length > 0 && (
-                <div className="flex items-center space-x-1">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h3 className={`font-semibold text-gray-900 ${
+                  task.completed ? "line-through text-gray-500" : ""
+                }`}>
+                  {task.title}
+                </h3>
+                
+                {task.description && (
+                  <p className={`text-sm text-gray-600 mt-1 ${
+                    task.completed ? "line-through" : ""
+                  }`}>
+                    {task.description}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center space-x-2 ml-4">
+                <Badge variant={priorityBadge.variant} size="sm">
+                  <ApperIcon 
+                    name={priorityBadge.icon} 
+                    size={12} 
+                    className="mr-1" 
+                  />
+                  {task.priority}
+                </Badge>
+
+                <div className="flex space-x-1">
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="p-1 h-6 w-6"
+                    onClick={() => onEdit(task)}
+                    className="p-1.5"
                   >
-                    <ApperIcon 
-                      name={isExpanded ? "ChevronDown" : "ChevronRight"} 
-                      size={12} 
-                    />
+                    <ApperIcon name="Edit2" size={14} />
                   </Button>
-                  <span className="text-xs text-gray-500">
-                    {subtasks.filter(s => s.completed).length}/{subtasks.length} subtasks
-                  </span>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onDelete(task.Id)}
+                    className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <ApperIcon name="Trash2" size={14} />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center space-x-2">
+                <span 
+                  className="category-tag text-xs"
+                  style={{ 
+                    backgroundColor: `rgba(124, 58, 237, 0.1)`,
+                    color: "#7C3AED"
+                  }}
+                >
+                  {task.category}
+                </span>
+                
+                {subtasks.length > 0 && (
+                  <div className="flex items-center space-x-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="p-1 h-6 w-6"
+                    >
+                      <ApperIcon 
+                        name={isExpanded ? "ChevronDown" : "ChevronRight"} 
+                        size={12} 
+                      />
+                    </Button>
+                    <span className="text-xs text-gray-500">
+                      {subtasks.filter(s => s.completed).length}/{subtasks.length} subtasks
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {dueDateText && (
+                <div className={`flex items-center space-x-1 text-xs ${
+                  isOverdue(task.dueDate)
+                    ? "text-red-600"
+                    : isDueToday(task.dueDate)
+                    ? "text-amber-600"
+                    : "text-gray-500"
+                }`}>
+                  <ApperIcon 
+                    name={isOverdue(task.dueDate) ? "AlertCircle" : "Calendar"} 
+                    size={12} 
+                  />
+                  <span>{dueDateText}</span>
                 </div>
               )}
             </div>
 
-            {dueDateText && (
-              <div className={`flex items-center space-x-1 text-xs ${
-                isOverdue(task.dueDate)
-                  ? "text-red-600"
-                  : isDueToday(task.dueDate)
-                  ? "text-amber-600"
-                  : "text-gray-500"
-              }`}>
-                <ApperIcon 
-                  name={isOverdue(task.dueDate) ? "AlertCircle" : "Calendar"} 
-                  size={12} 
-                />
-                <span>{dueDateText}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onEdit(task)}
-                className="p-2"
-              >
-                <ApperIcon name="Edit2" size={14} />
-              </Button>
-              
-              {onCreateSubtask && (
+            {/* Action buttons */}
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+              <div className="flex items-center space-x-2">
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onCreateSubtask(task)}
+                  onClick={() => onEdit(task)}
                   className="p-2"
-                  title="Add Subtask"
                 >
-                  <ApperIcon name="Plus" size={14} />
+                  <ApperIcon name="Edit2" size={14} />
                 </Button>
-              )}
-            </div>
+                
+                {onCreateSubtask && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onCreateSubtask(task)}
+                    className="p-2"
+                    title="Add Subtask"
+                  >
+                    <ApperIcon name="Plus" size={14} />
+                  </Button>
+                )}
+              </div>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDelete(task.Id)}
-              className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-            >
-              <ApperIcon name="Trash2" size={14} />
-            </Button>
-</div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onDelete(task.Id)}
+                className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <ApperIcon name="Trash2" size={14} />
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
 
       {/* Subtasks */}
       {subtasks.length > 0 && isExpanded && (
@@ -281,7 +282,7 @@ return (
             </motion.div>
           ))}
         </motion.div>
-)}
+      )}
     </div>
   );
 };
