@@ -1,0 +1,57 @@
+[
+  {
+    "Id": 1,
+    "title": "Review project proposal",
+    "description": "Review the Q4 project proposal and provide feedback by end of week",
+    "priority": "high",
+    "dueDate": "2024-01-20",
+    "category": "Work",
+    "completed": false,
+    "createdAt": "2024-01-15T10:00:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 2,
+    "title": "Grocery shopping",
+    "description": "Buy ingredients for weekend dinner party",
+    "priority": "medium",
+    "dueDate": "2024-01-18",
+    "category": "Personal",
+    "completed": false,
+    "createdAt": "2024-01-15T14:30:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 3,
+    "title": "Complete React tutorial",
+    "description": "Finish the advanced React hooks tutorial on the learning platform",
+    "priority": "low",
+    "dueDate": "2024-01-25",
+    "category": "Learning",
+    "completed": true,
+    "createdAt": "2024-01-10T09:15:00Z",
+    "completedAt": "2024-01-16T16:45:00Z"
+  },
+  {
+    "Id": 4,
+    "title": "Schedule dentist appointment",
+    "description": "Call Dr. Smith's office to schedule routine cleaning",
+    "priority": "medium",
+    "dueDate": "2024-01-22",
+    "category": "Health",
+    "completed": false,
+    "createdAt": "2024-01-14T11:20:00Z",
+    "completedAt": null
+  },
+  {
+    "Id": 5,
+    "title": "Update resume",
+    "description": "Add recent projects and skills to resume for job applications",
+    "priority": "high",
+    "dueDate": "2024-01-19",
+    "category": "Career",
+    "completed": false,
+    "createdAt": "2024-01-12T15:45:00Z",
+    "completedAt": null
+  }
+]
