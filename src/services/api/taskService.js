@@ -56,6 +56,12 @@ tasks[index] = {
       }
     }
 
+    // Handle status updates for Kanban
+    if (updates.status !== undefined) {
+      tasks[index].status = updates.status;
+      tasks[index].completed = updates.status === 'completed';
+      tasks[index].completedAt = updates.status === 'completed' ? new Date().toISOString() : null;
+    }
     this.saveToStorage();
     return { ...tasks[index] };
   },
@@ -166,11 +172,33 @@ const index = tasks.findIndex(t => t.Id === parseInt(id));
       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   },
 
-  // Get all main tasks (tasks without parent)
+// Get all main tasks (tasks without parent)
   getMainTasks() {
     return tasks
       .filter(task => !task.parentId)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  // Get tasks by project ID
+  getTasksByProject(projectId) {
+    return tasks
+      .filter(task => task.projectId === parseInt(projectId))
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  // Update task status (for Kanban board)
+  updateTaskStatus(id, status) {
+    const index = tasks.findIndex(task => task.Id === parseInt(id));
+    if (index === -1) return null;
+
+    tasks[index] = {
+      ...tasks[index],
+      status: status,
+      completed: status === 'completed',
+      completedAt: status === 'completed' ? new Date().toISOString() : null
+    };
+
+    return { ...tasks[index] };
   }
 };
 

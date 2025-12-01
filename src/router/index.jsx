@@ -23,6 +23,8 @@ const SuspenseWrapper = ({ children }) => (
   </Suspense>
 );
 
+const ProjectDetail = lazy(() => import("@/components/pages/ProjectDetail"));
+
 const mainRoutes = [
   {
     path: "",
@@ -38,6 +40,14 @@ const mainRoutes = [
     element: (
       <SuspenseWrapper>
         <Projects />
+      </SuspenseWrapper>
+    )
+  },
+  {
+    path: "projects/:projectId",
+    element: (
+      <SuspenseWrapper>
+        <ProjectDetail />
       </SuspenseWrapper>
     )
   },

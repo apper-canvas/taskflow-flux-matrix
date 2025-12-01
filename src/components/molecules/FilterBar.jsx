@@ -8,7 +8,10 @@ const FilterBar = ({
   onFilterChange, 
   searchQuery, 
   onSearchChange,
-  taskCounts = { all: 0, active: 0, completed: 0 }
+  taskCounts = { all: 0, active: 0, completed: 0 },
+  activeView,
+  onViewChange,
+  showViewToggle = false
 }) => {
   const filters = [
     { 
@@ -28,13 +31,19 @@ const FilterBar = ({
     }
   ];
 
+  const views = [
+    { key: 'list', label: 'List', icon: 'List' },
+    { key: 'kanban', label: 'Kanban', icon: 'Kanban' },
+    { key: 'calendar', label: 'Calendar', icon: 'Calendar' }
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       className="bg-white rounded-lg p-4 task-card-shadow space-y-4"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 sm:space-x-4">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0 lg:space-x-4">
         {/* Filter Buttons */}
         <div className="flex space-x-2">
           {filters.map((filter) => (
@@ -52,6 +61,25 @@ const FilterBar = ({
             </Button>
           ))}
         </div>
+
+        {/* View Toggle (if enabled) */}
+        {showViewToggle && onViewChange && (
+          <div className="flex space-x-2">
+            {views.map((view) => (
+              <Button
+                key={view.key}
+                variant={activeView === view.key ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => onViewChange(view.key)}
+                className="flex items-center space-x-2"
+                disabled={view.key === 'calendar'}
+              >
+                <ApperIcon name={view.icon} size={14} />
+                <span className="hidden sm:inline">{view.label}</span>
+              </Button>
+            ))}
+          </div>
+        )}
 
         {/* Search Input */}
         <div className="flex-1 max-w-xs">

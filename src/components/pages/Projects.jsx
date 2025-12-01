@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import Empty from "@/components/ui/Empty";
@@ -10,7 +11,6 @@ import Badge from "@/components/atoms/Badge";
 import ApperIcon from "@/components/ApperIcon";
 import { projectService } from "@/services/api/projectService";
 import ProjectForm from "@/components/molecules/ProjectForm";
-
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -207,13 +207,14 @@ const Projects = () => {
           }
         />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredProjects.map((project) => (
             <motion.div
               key={project.Id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-xl p-6 task-card-shadow hover:task-card-shadow-hover transition-shadow"
+              className="bg-white rounded-xl p-6 task-card-shadow hover:task-card-shadow-hover transition-shadow cursor-pointer"
+              onClick={() => navigate(`/projects/${project.Id}`)}
             >
               {/* Project Header */}
               <div className="flex items-start justify-between mb-4">
@@ -224,7 +225,7 @@ const Projects = () => {
                   />
                   <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -278,6 +279,22 @@ const Projects = () => {
                     <span>Due: {new Date(project.dueDate).toLocaleDateString()}</span>
                   )}
                 </div>
+
+                {/* View Tasks Button */}
+                <div className="pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full flex items-center justify-center space-x-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/projects/${project.Id}`);
+                    }}
+                  >
+                    <ApperIcon name="Kanban" size={16} />
+                    <span>View Tasks</span>
+                  </Button>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -285,6 +302,8 @@ const Projects = () => {
       )}
     </motion.div>
   );
+
+  const navigate = useNavigate();
 };
 
 export default Projects;
