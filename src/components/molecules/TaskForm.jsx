@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { projectService } from "@/services/api/projectService";
 import ApperIcon from "@/components/ApperIcon";
@@ -90,21 +89,17 @@ if (!initialData) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl p-6 task-card-shadow"
-    >
+<div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">
           {initialData ? "Edit Task" : "Create New Task"}
         </h2>
-        {onClose && (
+{onClose && (
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="p-2"
+            className="p-2 absolute top-4 right-4"
           >
             <ApperIcon name="X" size={16} />
           </Button>
@@ -190,12 +185,13 @@ if (!initialData) {
           </div>
         )}
 
-        <div className="flex justify-end gap-3 pt-4">
+<div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
           {onClose && (
             <Button
               type="button"
               variant="secondary"
               onClick={onClose}
+              className="order-2 sm:order-1"
             >
               Cancel
             </Button>
@@ -210,7 +206,7 @@ if (!initialData) {
           </Button>
         </div>
       </form>
-    </motion.div>
+</div>
   );
 };
 

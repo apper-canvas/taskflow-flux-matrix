@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import Input from "@/components/atoms/Input";
+import React, { useState } from "react";
+import { format } from "date-fns";
+import ApperIcon from "@/components/ApperIcon";
 import Textarea from "@/components/atoms/Textarea";
 import Select from "@/components/atoms/Select";
 import Button from "@/components/atoms/Button";
-import ApperIcon from "@/components/ApperIcon";
-import { format } from "date-fns";
+import Input from "@/components/atoms/Input";
 
 const ProjectForm = ({ onSubmit, onClose, initialData = null }) => {
   const [formData, setFormData] = useState({
@@ -97,130 +96,95 @@ const ProjectForm = ({ onSubmit, onClose, initialData = null }) => {
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl p-6 task-card-shadow"
-    >
-      <div className="flex items-center justify-between mb-6">
+<div className="p-6">
+    <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">
-          {initialData ? "Edit Project" : "Create New Project"}
+            {initialData ? "Edit Project" : "Create New Project"}
         </h2>
-        {onClose && (
-          <Button
+        {onClose && <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="p-2"
-          >
+            className="p-2 absolute top-4 right-4">
             <ApperIcon name="X" size={16} />
-          </Button>
-        )}
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+        </Button>}
+    </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          label="Project Name"
-          value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          placeholder="Enter project name"
-          error={errors.name}
-          maxLength={100}
-        />
-
+            label="Project Name"
+            value={formData.name}
+            onChange={e => handleChange("name", e.target.value)}
+            placeholder="Enter project name"
+            error={errors.name}
+            maxLength={100} />
         <Textarea
-          label="Description"
-          value={formData.description}
-          onChange={(e) => handleChange("description", e.target.value)}
-          placeholder="Describe your project goals and objectives..."
-          rows={3}
-        />
-
+            label="Description"
+            value={formData.description}
+            onChange={e => handleChange("description", e.target.value)}
+            placeholder="Describe your project goals and objectives..."
+            rows={3} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Select
-            label="Status"
-            value={formData.status}
-            onChange={(e) => handleChange("status", e.target.value)}
-          >
-            <option value="planning">Planning</option>
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
-            <option value="completed">Completed</option>
-          </Select>
-
-          <Select
-            label="Priority"
-            value={formData.priority}
-            onChange={(e) => handleChange("priority", e.target.value)}
-          >
-            <option value="low">Low Priority</option>
-            <option value="medium">Medium Priority</option>
-            <option value="high">High Priority</option>
-          </Select>
-
-          <Select
-            label="Color"
-            value={formData.color}
-            onChange={(e) => handleChange("color", e.target.value)}
-          >
-            {colorOptions.map((color) => (
-              <option key={color.value} value={color.value}>
-                {color.label}
-              </option>
-            ))}
-          </Select>
-
-          <Input
-            type="number"
-            label="Progress (%)"
-            value={formData.progress}
-            onChange={(e) => handleChange("progress", e.target.value)}
-            min={0}
-            max={100}
-          />
+            <Select
+                label="Status"
+                value={formData.status}
+                onChange={e => handleChange("status", e.target.value)}>
+                <option value="planning">Planning</option>
+                <option value="active">Active</option>
+                <option value="paused">Paused</option>
+                <option value="completed">Completed</option>
+            </Select>
+            <Select
+                label="Priority"
+                value={formData.priority}
+                onChange={e => handleChange("priority", e.target.value)}>
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+            </Select>
+            <Select
+                label="Color"
+                value={formData.color}
+                onChange={e => handleChange("color", e.target.value)}>
+                {colorOptions.map(color => <option key={color.value} value={color.value}>
+                    {color.label}
+                </option>)}
+            </Select>
+            <Input
+                type="number"
+                label="Progress (%)"
+                value={formData.progress}
+                onChange={e => handleChange("progress", e.target.value)}
+                min={0}
+                max={100} />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input
-            type="date"
-            label="Start Date"
-            value={formData.startDate}
-            onChange={(e) => handleChange("startDate", e.target.value)}
-            max={formData.dueDate || undefined}
-          />
-
-          <Input
-            type="date"
-            label="Due Date (Optional)"
-            value={formData.dueDate}
-            onChange={(e) => handleChange("dueDate", e.target.value)}
-            min={formData.startDate || getTodayDate()}
-            error={errors.dueDate}
-          />
+            <Input
+                type="date"
+                label="Start Date"
+                value={formData.startDate}
+                onChange={e => handleChange("startDate", e.target.value)}
+                max={formData.dueDate || undefined} />
+            <Input
+                type="date"
+                label="Due Date (Optional)"
+                value={formData.dueDate}
+                onChange={e => handleChange("dueDate", e.target.value)}
+                min={formData.startDate || getTodayDate()}
+                error={errors.dueDate} />
         </div>
-
-        <div className="flex space-x-3 pt-4">
-          <Button
-            type="submit"
-            className="flex-1"
-            disabled={!formData.name.trim()}
-          >
-            <ApperIcon name="Plus" size={16} className="mr-2" />
-            {initialData ? "Update Project" : "Create Project"}
-          </Button>
-          
-          {onClose && (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onClose}
-            >
-              Cancel
+        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <Button type="submit" className="flex-1" disabled={!formData.name.trim()}>
+                <ApperIcon name="Plus" size={16} className="mr-2" />
+                {initialData ? "Update Project" : "Create Project"}
             </Button>
-          )}
-        </div>
-      </form>
-    </motion.div>
+            {onClose && <Button
+                type="button"
+                variant="secondary"
+                onClick={onClose}
+                className="flex-1 sm:flex-none">Cancel
+                            </Button>}
+        </div>)
+                </form></div>
   );
 };
 

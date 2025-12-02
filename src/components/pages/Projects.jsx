@@ -9,6 +9,7 @@ import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 import Badge from "@/components/atoms/Badge";
 import ApperIcon from "@/components/ApperIcon";
+import Modal from "@/components/atoms/Modal";
 import { projectService } from "@/services/api/projectService";
 import ProjectForm from "@/components/molecules/ProjectForm";
 const Projects = () => {
@@ -17,8 +18,8 @@ const Projects = () => {
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [showForm, setShowForm] = useState(false);
-const [editingProject, setEditingProject] = useState(null);
+const [showForm, setShowForm] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
   const navigate = useNavigate();
 
   const loadProjects = async () => {
@@ -143,16 +144,19 @@ const [editingProject, setEditingProject] = useState(null);
         </div>
 
         <Button
-          onClick={() => setShowForm(!showForm)}
+onClick={() => setShowForm(true)}
           className="flex items-center space-x-2"
         >
-          <ApperIcon name={showForm ? "X" : "Plus"} size={16} />
-          <span>{showForm ? "Cancel" : "New Project"}</span>
+          <ApperIcon name="Plus" size={16} />
+          <span>New Project</span>
         </Button>
       </div>
 
-      {/* Project Form */}
-      {(showForm || editingProject) && (
+      {/* Project Form Modal */}
+      <Modal isOpen={showForm || editingProject} onClose={() => {
+        setShowForm(false);
+        setEditingProject(null);
+      }}>
         <ProjectForm
           onSubmit={editingProject ? handleUpdateProject : handleCreateProject}
           onClose={() => {
@@ -161,7 +165,7 @@ const [editingProject, setEditingProject] = useState(null);
           }}
           initialData={editingProject}
         />
-      )}
+      </Modal>
 
       {/* Filters */}
       <div className="bg-white rounded-xl p-6 task-card-shadow">
@@ -198,7 +202,7 @@ const [editingProject, setEditingProject] = useState(null);
           description={searchQuery || statusFilter !== 'all' 
             ? "Try adjusting your search or filters" 
             : "Create your first project to get started"}
-          action={
+action={
             !searchQuery && statusFilter === 'all' ? (
               <Button onClick={() => setShowForm(true)} className="mt-4">
                 <ApperIcon name="Plus" size={16} className="mr-2" />

@@ -7,6 +7,7 @@ import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import Button from "@/components/atoms/Button";
+import Modal from "@/components/atoms/Modal";
 import TaskList from "@/components/organisms/TaskList";
 import TaskForm from "@/components/molecules/TaskForm";
 import FilterBar from "@/components/molecules/FilterBar";
@@ -17,7 +18,7 @@ const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+const [searchQuery, setSearchQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [creatingSubtaskFor, setCreatingSubtaskFor] = useState(null);
@@ -186,7 +187,7 @@ const getTaskCounts = () => {
         </div>
 
         <Button
-          onClick={() => setShowForm(!showForm)}
+onClick={() => setShowForm(true)}
           className="flex items-center space-x-2"
         >
           <ApperIcon name={showForm ? "X" : "Plus"} size={16} />
@@ -195,7 +196,11 @@ const getTaskCounts = () => {
       </div>
 
       {/* Task Form */}
-      {(showForm || editingTask) && (
+{/* Task Form Modal */}
+      <Modal isOpen={showForm || editingTask} onClose={() => {
+        setShowForm(false);
+        setEditingTask(null);
+      }}>
         <TaskForm
           onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
           categories={categories}
@@ -205,7 +210,7 @@ const getTaskCounts = () => {
           }}
           initialData={editingTask}
         />
-      )}
+      </Modal>
 
       {/* Filter Bar */}
       <FilterBar
@@ -223,7 +228,7 @@ const getTaskCounts = () => {
         onToggleComplete={handleToggleComplete}
         onEditTask={setEditingTask}
         onDeleteTask={handleDeleteTask}
-        onCreateTask={() => setShowForm(true)}
+onCreateTask={() => setShowForm(true)}
         onCreateSubtask={handleCreateSubtask}
       />
 

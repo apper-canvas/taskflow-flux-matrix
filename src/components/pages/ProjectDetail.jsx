@@ -7,13 +7,13 @@ import ErrorView from "@/components/ui/ErrorView";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import ApperIcon from "@/components/ApperIcon";
+import Modal from "@/components/atoms/Modal";
 import { projectService } from "@/services/api/projectService";
 import { taskService } from "@/services/api/taskService";
 import KanbanBoard from "@/components/organisms/KanbanBoard";
 import TaskList from "@/components/organisms/TaskList";
 import CalendarView from "@/components/organisms/CalendarView";
 import TaskForm from "@/components/molecules/TaskForm";
-
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
@@ -23,9 +23,8 @@ const ProjectDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeView, setActiveView] = useState('kanban');
-  const [showTaskForm, setShowTaskForm] = useState(false);
+const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-
   useEffect(() => {
     loadProjectData();
   }, [projectId]);
@@ -185,7 +184,7 @@ const ProjectDetail = () => {
           </div>
 
           <Button
-            onClick={() => setShowTaskForm(true)}
+onClick={() => setShowTaskForm(true)}
             className="flex items-center space-x-2"
           >
             <ApperIcon name="Plus" size={16} />
@@ -257,8 +256,11 @@ size="sm"
         )}
       </div>
 
-      {/* Task Form Modal */}
-      {showTaskForm && (
+{/* Task Form Modal */}
+      <Modal isOpen={showTaskForm || editingTask} onClose={() => {
+        setShowTaskForm(false);
+        setEditingTask(null);
+      }}>
         <TaskForm
           task={editingTask}
           onSubmit={handleTaskSubmit}
@@ -268,7 +270,7 @@ size="sm"
           }}
           categories={['Work', 'Personal', 'Learning', 'Health', 'Career']}
         />
-      )}
+      </Modal>
     </motion.div>
   );
 };
